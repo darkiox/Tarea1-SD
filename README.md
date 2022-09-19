@@ -26,12 +26,3 @@ Para montar el sistema se debe ejecutar el siguiente comando en el directorio de
  - [Redis](https://redis.io/docs/getting-started/)
  - [gRPC](https://grpc.io/docs/platforms/web/basics/)
 
-
-## Deployment
-
-To deploy this project run
-
-```bash
-  npm run deploy
-```
-
