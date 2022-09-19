@@ -1,0 +1,81 @@
+version: "1.0"
+services:
+  backend:
+    container_name: backend-tarea
+    build: ./backend
+    ports:
+      - "50051:50051"
+    depends_on:
+      - database
+      - redis-1
+      - redis-2
+      - redis-3
+  client:
+    container_name: client-tarea
+    build: ./client
+    ports:
+      - "9000"
+      - "5050:5000"
+    depends_on:
+      - backend
+      - database
+      - redis-1
+      - redis-2
+      - redis-3
+  database:
+    image: bitnami/postgresql:12.10.0
+    container_name: db-tarea
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./backend/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRESQL_USER: postgres
+      POSTGRESQL_PASSWORD: postgrespw
+      POSTGRESQL_DATABASE: tarea
+    restart: always
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+      PGADMIN_DEFAULT_PASSWORD: postgrespw
+    ports:
+      - "8080:80"
+  redis-1:
+    image: "bitnami/redis:latest"
+    container_name: redis-1-master
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - ALLOW_EMPTY_PASSWORD=yes
+    command: redis-server --protected-mode no --maxmemory 10mb --maxmemory-policy allkeys-lru
+  redis-2:
+    image: "bitnami/redis:latest"
+    container_name: redis-2-slave
+    ports:
+      - "6380"
+    depends_on:
+      - redis-1
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-1
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - ALLOW_EMPTY_PASSWORD=yes
+    command: /opt/bitnami/scripts/redis/run.sh --maxmemory 10mb --maxmemory-policy allkeys-lru
+  redis-3:
+    image: "bitnami/redis:latest"
+    container_name: redis-3-slave
+    ports:
+      - "6381"
+    depends_on: 
+      - redis-1
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-1
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - ALLOW_EMPTY_PASSWORD=yes
+    command: /opt/bitnami/scripts/redis/run.sh --maxmemory 10mb --maxmemory-policy allkeys-lru
