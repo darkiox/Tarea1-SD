@@ -25,4 +25,5 @@ Para montar el sistema se debe ejecutar el siguiente comando en el directorio de
  - [Problema Psycopg2 con libpq por uso de chip ARM](https://github.com/psycopg/psycopg2/issues/1360)
  - [Redis](https://redis.io/docs/getting-started/)
  - [gRPC](https://grpc.io/docs/platforms/web/basics/)
-
+ - [Flask](https://flask.palletsprojects.com/en/2.2.x/tutorial/factory/)
+ - [Pallets](https://palletsprojects.com/)
