@@ -1,6 +1,6 @@
 
 # Tarea 1 - Sistemas Distribuidos
-Desarrollado por [Darkiox](https://github.com/darkiox) y [JavierGv1](https://github.com/)
+Desarrollado por [Darkiox](https://github.com/darkiox) y [JavierGv1](https://github.com/JavierGv1)
 
 Sistema que implementa Redis para caché y gRPC para conexión entre microservicios.
 
